@@ -76,8 +76,12 @@ const Reports = () => {
     
     if (storedData) {
       try {
-        return JSON.parse(storedData);
-        return parsed.formData ? { [assessmentType]: parsed.formData } : parsed;
+        const parsed = JSON.parse(storedData);
+        // Handle heart disease's nested structure while preserving others
+        if (assessmentType === 'heartDisease' && parsed.formData) {
+          return { [assessmentType]: parsed.formData };
+        }
+        return parsed;
       } catch (e) {
         console.error('Error parsing stored assessment data:', e);
       }
