@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,6 +40,7 @@ import { calculateHeartDiseaseRisk } from '@/utils/riskAssessment';
 
 const HeartDiseaseAssessment = () => {
   const { toast: uiToast } = useToast();
+  const navigate = useNavigate();
   
   // Form state for heart disease assessment
   const [formData, setFormData] = useState({
@@ -119,7 +121,7 @@ const HeartDiseaseAssessment = () => {
     
     // Navigate to results page
     setTimeout(() => {
-      window.location.href = '/reports?type=heartDisease';
+      navigate('/reports?type=heartDisease');
     }, 1500);
   };
   
