@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,6 +25,7 @@ import {
 
 const DiabetesAssessment = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   // Form state
   const [formData, setFormData] = useState({
@@ -99,7 +101,7 @@ const DiabetesAssessment = () => {
     
     // Redirect to the specific diabetes report page
     setTimeout(() => {
-      window.location.href = '/reports?type=diabetes';
+      navigate('/reports?type=diabetes');
     }, 1500);
   };
   
