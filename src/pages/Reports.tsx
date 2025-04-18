@@ -520,7 +520,7 @@ const Reports = () => {
                       <span className="print:text-black">Risk Level:</span>
                       <span className="font-medium capitalize print:text-black">{result.risk}</span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-1 print:bg-gray-300 relative">
+                    <div className="risk bar w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-1 print:bg-gray-300 relative">
                       <div 
                         className={`h-2.5 rounded-full absolute top-0 left-0 ${
                           result.risk === 'low' 
