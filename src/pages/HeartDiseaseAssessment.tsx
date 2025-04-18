@@ -101,8 +101,10 @@ const HeartDiseaseAssessment = () => {
     const riskAssessment = calculateHeartDiseaseRisk(formData);
     
     // Save both form data and results to localStorage
-    localStorage.setItem('heartDiseaseFormData', JSON.stringify(formData));
-    localStorage.setItem('heartDiseaseResults', JSON.stringify(riskAssessment));
+    localStorage.setItem('heartDiseaseAssessment', JSON.stringify({
+      formData: formData,
+      results: riskAssessment
+    }));
     
     // Log data for debugging
     console.log('Form submitted:', formData);
