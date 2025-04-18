@@ -77,6 +77,7 @@ const Reports = () => {
     if (storedData) {
       try {
         return JSON.parse(storedData);
+        return parsed.formData ? { [assessmentType]: parsed.formData } : parsed;
       } catch (e) {
         console.error('Error parsing stored assessment data:', e);
       }
