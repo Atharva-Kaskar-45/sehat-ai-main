@@ -520,14 +520,14 @@ const Reports = () => {
                       <span className="print:text-black">Risk Level:</span>
                       <span className="font-medium capitalize print:text-black">{result.risk}</span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-1 print:bg-gray-300">
+                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-1 print:bg-gray-300 relative">
                       <div 
-                        className={`h-2.5 rounded-full print:!bg-opacity-100 ${
+                        className={`h-2.5 rounded-full absolute top-0 left-0 ${
                           result.risk === 'low' 
-                            ? 'bg-green-500 print:bg-green-600' 
+                            ? 'bg-green-500 print:bg-green-600 print:!bg-opacity-100' 
                             : result.risk === 'medium' 
-                              ? 'bg-yellow-500 print:bg-yellow-600' 
-                              : 'bg-red-500 print:bg-red-600'
+                              ? 'bg-yellow-500 print:bg-yellow-600 print:!bg-opacity-100' 
+                              : 'bg-red-500 print:bg-red-600 print:!bg-opacity-100'
                         }`}
                         style={{ 
                           width: `${result.score}%`,
@@ -535,6 +535,7 @@ const Reports = () => {
                           colorAdjust: 'exact',
                           printColorAdjust: 'exact'
                         }}
+                        aria-hidden="true"
                       ></div>
                     </div>
                     <div className="flex justify-between text-xs print:text-black">
