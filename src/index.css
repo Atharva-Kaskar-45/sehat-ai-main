@@ -132,6 +132,42 @@
 
 /* Print styles outside of @layer to avoid circular dependencies */
 @media print {
+
+  /* Risk Assessment Bar - Force Visibility */
+  .risk-bar {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: #e5e7eb !important; /* gray-200 */
+  }
+  
+  .risk-bar > div {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background-color: inherit !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Specific colors for each risk level */
+  .risk-bar > .bg-green-500 {
+    background-color: #10b981 !important; /* green-500 */
+  }
+  .risk-bar > .bg-yellow-500 {
+    background-color: #f59e0b !important; /* yellow-500 */
+  }
+  .risk-bar > .bg-red-500 {
+    background-color: #ef4444 !important; /* red-500 */
+  }
+
+  /* Edge-specific fixes */
+  @supports (-ms-ime-align:auto) {
+    .risk-bar > div {
+      background-image: none !important;
+    }
+  }
+}
+  
   /* Hide footer and other elements when printing */
   footer, 
   .print\:hidden {
