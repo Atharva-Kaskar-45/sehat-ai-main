@@ -520,19 +520,23 @@ const Reports = () => {
                       <span className="print:text-black">Risk Level:</span>
                       <span className="font-medium capitalize print:text-black">{result.risk}</span>
                     </div>
-                    <div className="risk-bar w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-1 print:bg-gray-300">
+                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-1 print:bg-gray-300 print:dark:bg-gray-300">
                       <div 
-                        className={`h-2.5 rounded-full ${
+                        className={`h-2.5 rounded-full print:!bg-opacity-100 ${
                           result.risk === 'low' 
-                            ? 'bg-green-500' 
+                            ? 'bg-green-500 print:bg-green-600' 
                             : result.risk === 'medium' 
-                              ? 'bg-yellow-500' 
-                              : 'bg-red-500'
+                              ? 'bg-yellow-500 print:bg-yellow-600' 
+                              : 'bg-red-500 print:bg-red-600'
                         }`}
                         style={{ 
                           width: `${result.score}%`,
+                          // Add these print-specific styles:
+                          WebkitPrintColorAdjust: 'exact',
+                          colorAdjust: 'exact',
                           printColorAdjust: 'exact',
-                          WebkitPrintColorAdjust: 'exact'
+                          // Force visibility in print:
+                          printColor: 'inherit !important'
                         }}
                       ></div>
                     </div>
