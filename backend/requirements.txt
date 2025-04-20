@@ -9,3 +9,4 @@ pdf2image
 transformers
 sentencepiece 
 torch
+gunicorn 
