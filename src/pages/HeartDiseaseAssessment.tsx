@@ -40,6 +40,8 @@ import { calculateHeartDiseaseRisk } from '@/utils/riskAssessment';
 
 const HeartDiseaseAssessment = () => {
   const { toast: uiToast } = useToast();
+  const [file, setFile] = useState(null);
+
   const navigate = useNavigate();
   
   // Form state for heart disease assessment
@@ -67,6 +69,50 @@ const HeartDiseaseAssessment = () => {
       ...formData,
       [name]: parseFloat(value) || 0,
     });
+  };
+  const handleGetHeartMetrics = async (file: any) => {
+    if (!file) return;
+  
+    const form = new FormData();
+    form.append("file", file);
+  
+    try {
+      const res = await fetch("http://localhost:5000/api/extract-health-metrics?type=heart", {
+        method: "POST",
+        body: form,
+      });
+  
+      const result = await res.json();
+  
+      if (result.success) {
+        const metrics = result.data.metrics;
+  
+        const parsed =
+          typeof metrics === "string"
+            ? JSON.parse(metrics)
+            : metrics?.raw_response
+            ? JSON.parse(metrics.raw_response.replace(/```(json)?/g, ""))
+            : metrics;
+  
+        setFormData((prevData) => ({
+          ...prevData,
+          age: parsed.Age ?? prevData.age,
+          gender: parsed.Gender ?? prevData.gender,
+          cholesterol: parsed.Cholesterol ?? prevData.cholesterol,
+          bloodPressure: parsed["Blood Pressure"] ?? prevData.bloodPressure,
+          heartRate: parsed["Heart Rate"] ?? prevData.heartRate,
+          exercise: parsed.Exercise ?? prevData.exercise,
+          smoker: parsed.Smoker ?? prevData.smoker,
+          diabetic: parsed.Diabetic ?? prevData.diabetic,
+          familyHistory: parsed["Family History"] ?? prevData.familyHistory,
+          bmi: parsed.BMI ?? prevData.bmi,
+        }));
+      } else {
+        console.error("Backend error:", result.error);
+      }
+    } catch (error) {
+      console.error("Error fetching heart metrics:", error);
+    }
   };
   
   // Handle slider changes
@@ -126,7 +172,28 @@ const HeartDiseaseAssessment = () => {
       navigate('/reports?type=heartDisease');
     }, 1500);
   };
-  
+  const handleDrop = (e) => {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleDelete = () => {
+    setFile(null);
+    const input = document.getElementById('input-file') as HTMLInputElement;
+    if (input) input.value = ''; 
+  };
+
+  const handleDragOver = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+  };
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-12">
@@ -477,6 +544,47 @@ const HeartDiseaseAssessment = () => {
                     </div>
                   </div>
                   
+                  <div className='py-5 flex flex-col'>
+                    <h1 className='file-label py-5'>Upload your Lab Report</h1>
+
+                    {!file ? (
+                      <label 
+                        htmlFor="input-file" 
+                        id='drop-area'
+                        onDrop={handleDrop}
+                        onDragOver={handleDragOver}
+                        className="border-2 border-dashed border-gray-400 p-4 rounded-lg cursor-pointer"
+                      >
+                        <input 
+                          type='file' 
+                          accept='application/pdf' 
+                          id='input-file' 
+                          hidden 
+                          onChange={handleFileChange}
+                        />
+                        <div className='flex flex-col items-center justify-center'>
+                          <img src='/508-icon.png' height={60} width={60} alt="upload" />
+                          <p className='pt-4 text-center text-black '>
+                            Drag and drop or click here<br/>to upload lab report
+                          </p>
+                        </div>
+                      </label>
+                    ) : (
+                      <div className="flex items-center justify-between px-4 py-2 bg-gray-100 rounded border border-gray-300">
+                        <span className="text-sm text-gray-800">{file.name}</span>
+                        <button 
+                          onClick={handleDelete} 
+                          className="text-red-500 hover:text-red-700 text-sm font-semibold ml-4"
+                        >
+                          ✕ Remove
+                        </button>
+                      </div>
+                    )}
+                </div>
+                <Button  type="button" onClick={()=>{handleGetHeartMetrics(file)}} className="bg-health-ocean hover:bg-blue-700">
+                 Get Metrics
+                </Button>
+
                   <div className="px-4 py-3 bg-blue-50 border border-blue-100 rounded-md flex items-start">
                     <Info className="h-5 w-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
                     <p className="text-sm text-blue-700">

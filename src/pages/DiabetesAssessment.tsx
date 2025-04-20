@@ -24,8 +24,11 @@ import {
 } from '@/components/ui/tooltip';
 
 const DiabetesAssessment = () => {
+  const [file, setFile] = useState(null);
+
   const { toast } = useToast();
   const navigate = useNavigate();
+
   
   // Form state
   const [formData, setFormData] = useState({
@@ -82,6 +85,51 @@ const DiabetesAssessment = () => {
       pregnant: gender === 'female' ? formData.pregnant : false,
     });
   };
+  const handleGetMetrics = async (file: any) => {
+    if (!file) return;
+  
+    const form = new FormData();
+    form.append("file", file);
+  
+    try {
+      const res = await fetch("http://localhost:5000/api/extract-health-metrics", {
+        method: "POST",
+        body: form,
+      });
+  
+      const result = await res.json();
+  
+      if (result.success) {
+        const metrics = result.data.metrics;
+  
+        // If metrics are nested inside raw_response, try to parse it
+        const parsed =
+          typeof metrics === "string"
+            ? JSON.parse(metrics)
+            : metrics?.raw_response
+            ? JSON.parse(metrics.raw_response.replace(/```(json)?/g, ""))
+            : metrics;
+  
+        setFormData((prevData) => ({
+          age: parsed.Age ?? prevData.age,
+          gender: parsed.Gender ?? prevData.gender,
+          glucose: parsed.Glucose ?? parsed["Glucose (mg/dL)"] ?? prevData.glucose,
+          bloodPressure: parsed["Blood Pressure"] ?? prevData.bloodPressure,
+          skinThickness: parsed["Skin Thickness"] ?? parsed["Skin Thickness (mm)"] ?? prevData.skinThickness,
+          insulin: parsed.Insulin ?? parsed["Insulin (μU/mL)"] ?? prevData.insulin,
+          bmi: parsed.BMI ?? prevData.bmi,
+          diabetesPedigree:
+            parsed["Diabetes Pedigree Function"] ?? prevData.diabetesPedigree,
+          pregnant: prevData.pregnant,
+          pregnancies: prevData.pregnancies,
+        }));
+      } else {
+        console.error("Backend error:", result.error);
+      }
+    } catch (error) {
+      console.error("Error fetching metrics:", error);
+    }
+  };
   
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
@@ -104,7 +152,29 @@ const DiabetesAssessment = () => {
       navigate('/reports?type=diabetes');
     }, 1500);
   };
-  
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleDelete = () => {
+    setFile(null);
+    const input = document.getElementById('input-file') as HTMLInputElement;
+    if (input) input.value = ''; 
+  };
+
+  const handleDragOver = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+  };
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-12">
@@ -143,7 +213,7 @@ const DiabetesAssessment = () => {
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-5 w-5 ml-1">
+                              <Button type='button' variant="ghost" size="icon" className="h-5 w-5 ml-1">
                                 <HelpCircle className="h-3 w-3" />
                               </Button>
                             </TooltipTrigger>
@@ -198,7 +268,7 @@ const DiabetesAssessment = () => {
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-5 w-5 ml-1">
+                                <Button type='button' variant="ghost" size="icon" className="h-5 w-5 ml-1">
                                   <HelpCircle className="h-3 w-3" />
                                 </Button>
                               </TooltipTrigger>
@@ -252,7 +322,7 @@ const DiabetesAssessment = () => {
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-5 w-5 ml-1">
+                              <Button type='button' variant="ghost" size="icon" className="h-5 w-5 ml-1">
                                 <HelpCircle className="h-3 w-3" />
                               </Button>
                             </TooltipTrigger>
@@ -302,7 +372,7 @@ const DiabetesAssessment = () => {
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-5 w-5 ml-1">
+                              <Button type='button' variant="ghost" size="icon" className="h-5 w-5 ml-1 ">
                                 <HelpCircle className="h-3 w-3" />
                               </Button>
                             </TooltipTrigger>
@@ -333,7 +403,7 @@ const DiabetesAssessment = () => {
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-5 w-5 ml-1">
+                              <Button type='button' variant="ghost" size="icon" className="h-5 w-5 ml-1">
                                 <HelpCircle className="h-3 w-3" />
                               </Button>
                             </TooltipTrigger>
@@ -364,7 +434,7 @@ const DiabetesAssessment = () => {
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-5 w-5 ml-1">
+                              <Button type='button' variant="ghost" size="icon" className="h-5 w-5 ml-1">
                                 <HelpCircle className="h-3 w-3" />
                               </Button>
                             </TooltipTrigger>
@@ -395,7 +465,7 @@ const DiabetesAssessment = () => {
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-5 w-5 ml-1">
+                              <Button  type='button' variant="ghost" size="icon" className="h-5 w-5 ml-1">
                                 <HelpCircle className="h-3 w-3" />
                               </Button>
                             </TooltipTrigger>
@@ -448,7 +518,7 @@ const DiabetesAssessment = () => {
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-5 w-5 ml-1">
+                              <Button type='button' variant="ghost" size="icon" className="h-5 w-5 ml-1">
                                 <HelpCircle className="h-3 w-3" />
                               </Button>
                             </TooltipTrigger>
@@ -473,6 +543,58 @@ const DiabetesAssessment = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* <div className='py-5 flex flex-col'>
+                  
+                  <h1 className=' file-label py-5'>Upload your Lab Report</h1>
+                  <label htmlFor="input-file" id='drop-area'>
+                    <input type='file' accept='pdf/*' id='input-file' hidden></input>
+                    <div id='image-view' className='flex px-5 items-center justify-center'>
+                      <img src='public\508-icon.png' height={10} width={120}></img>
+                      <p className='px-16 file-label'>Drag and drop or click here<br/>to upload lab report</p>
+                    </div>
+                  </label>
+                </div> */}
+                <div className='py-5 flex flex-col'>
+                    <h1 className='file-label py-5'>Upload your Lab Report</h1>
+
+                    {!file ? (
+                      <label 
+                        htmlFor="input-file" 
+                        id='drop-area'
+                        onDrop={handleDrop}
+                        onDragOver={handleDragOver}
+                        className="border-2 border-dashed border-gray-400 p-4 rounded-lg cursor-pointer"
+                      >
+                        <input 
+                          type='file' 
+                          accept='application/pdf' 
+                          id='input-file' 
+                          hidden 
+                          onChange={handleFileChange}
+                        />
+                        <div className='flex flex-col items-center justify-center'>
+                          <img src='/508-icon.png' height={60} width={60} alt="upload" />
+                          <p className='pt-4 text-center text-black '>
+                            Drag and drop or click here<br/>to upload lab report
+                          </p>
+                        </div>
+                      </label>
+                    ) : (
+                      <div className="flex items-center justify-between px-4 py-2 bg-gray-100 rounded border border-gray-300">
+                        <span className="text-sm text-gray-800">{file.name}</span>
+                        <button 
+                          onClick={handleDelete} 
+                          className="text-red-500 hover:text-red-700 text-sm font-semibold ml-4"
+                        >
+                          ✕ Remove
+                        </button>
+                      </div>
+                    )}
+                </div>
+                <Button  type="button" onClick={()=>{handleGetMetrics(file)}} className="bg-health-ocean hover:bg-blue-700">
+                 Get Metrics
+                </Button>
                 
                 <div className="px-4 py-3 bg-blue-50 border border-blue-100 rounded-md flex items-start">
                   <Info className="h-5 w-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
