@@ -13,7 +13,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "200.html"  // For frontend routes
+      "dest": "200.html"  
     }
   ]
 }
