@@ -92,7 +92,7 @@ const DiabetesAssessment = () => {
     form.append("file", file);
   
     try {
-      const res = await fetch("http://localhost:5000/api/extract-health-metrics", {
+      const res = await fetch("https://sehat-ai-main.vercel.app/api/extract-health-metrics", {
         method: "POST",
         body: form,
       });
