@@ -5,7 +5,6 @@ import json
 import logging
 import io
 import PyPDF2
-from transformers import MarianMTModel, MarianTokenizer
 from groq import Groq
 from dotenv import load_dotenv
 
@@ -18,14 +17,22 @@ sehat = Blueprint('sehat', __name__)
 # Initialize Groq client
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-# Load translation models once to avoid reloading every request
-translation_models = {
-    "hi": {
-        "tokenizer": MarianTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-hi"),
-        "model": MarianMTModel.from_pretrained("Helsinki-NLP/opus-mt-en-hi")
-    },
-    # Add other languages here like "mr", "kn" if needed
-}
+# Only load transformers if not on Vercel
+RUNNING_ON_VERCEL = os.environ.get('VERCEL') is not None
+if not RUNNING_ON_VERCEL:
+    try:
+        from transformers import MarianMTModel, MarianTokenizer
+        translation_models = {
+            "hi": {
+                "tokenizer": MarianTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-hi"),
+                "model": MarianMTModel.from_pretrained("Helsinki-NLP/opus-mt-en-hi")
+            },
+        }
+    except ImportError:
+        logger.warning("Transformers not available - translation disabled")
+        translation_models = {}
+else:
+    translation_models = {}
 
 def extract_text_from_pdf(file_data):
     try:
@@ -39,6 +46,10 @@ def extract_text_from_pdf(file_data):
         return ""
 
 def translate_text_list(text_list, lang_code):
+    if RUNNING_ON_VERCEL or not translation_models:
+        # Return a simple mock translation for Vercel
+        return [f"[{lang_code.upper()}] {text}" for text in text_list]
+    
     tokenizer = translation_models[lang_code]["tokenizer"]
     model = translation_models[lang_code]["model"]
     inputs = tokenizer(text_list, return_tensors="pt", padding=True, truncation=True)
