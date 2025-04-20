@@ -30,6 +30,7 @@ import {
 
 const ParkinsonsAssessment = () => {
   const { toast } = useToast();
+  const [file, setFile] = useState(null);
   const navigate = useNavigate();
   
   // Form state for voice features
@@ -153,6 +154,80 @@ const ParkinsonsAssessment = () => {
         return prev + 1;
       });
     }, 1000);
+  };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleDelete = () => {
+    setFile(null);
+    const input = document.getElementById('input-file') as HTMLInputElement;
+    if (input) input.value = ''; 
+  };
+
+  const handleDragOver = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+  };
+  
+  const handleGetParkinsonsMetrics = async (file: any) => {
+    if (!file) return;
+  
+    const form = new FormData();
+    form.append("file", file);
+  
+    try {
+      const res = await fetch("http://localhost:5000/api/extract-health-metrics?type=parkinsons", {
+        method: "POST",
+        body: form,
+      });
+  
+      const result = await res.json();
+  
+      if (result.success) {
+        const metrics = result.data.metrics;
+  
+        const parsed =
+          typeof metrics === "string"
+            ? JSON.parse(metrics)
+            : metrics?.raw_response
+            ? JSON.parse(metrics.raw_response.replace(/```(json)?/g, ""))
+            : metrics;
+            const parseIfValid = (val: any, fallback: number) =>
+              val !== undefined && val !== null && val !== "" && !Number.isNaN(Number(val))
+                ? parseFloat(val)
+                : fallback;
+                
+            setFormData((prevData) => ({
+              ...prevData,
+              MDVP_Fo: parseIfValid(parsed.MDVP_Fo, prevData.MDVP_Fo),
+              MDVP_Fhi: parseIfValid(parsed.MDVP_Fhi, prevData.MDVP_Fhi),
+              MDVP_Flo: parseIfValid(parsed.MDVP_Flo, prevData.MDVP_Flo),
+              MDVP_Jitter: parseIfValid(parsed.MDVP_Jitter, prevData.MDVP_Jitter),
+              MDVP_Shimmer: parseIfValid(parsed.MDVP_Shimmer, prevData.MDVP_Shimmer),
+              NHR: parseIfValid(parsed.NHR, prevData.NHR),
+              HNR: parseIfValid(parsed.HNR, prevData.HNR),
+              RPDE: parseIfValid(parsed.RPDE, prevData.RPDE),
+              DFA: parseIfValid(parsed.DFA, prevData.DFA),
+              spread1: parseIfValid(parsed.spread1, prevData.spread1),
+              spread2: parseIfValid(parsed.spread2, prevData.spread2),
+              D2: parseIfValid(parsed.D2, prevData.D2),
+              PPE: parseIfValid(parsed.PPE, prevData.PPE),
+            }));
+      } else {
+        console.error("Backend error:", result.error);
+      }
+    } catch (error) {
+      console.error("Error fetching Parkinson's metrics:", error);
+    }
   };
   
   return (
@@ -574,7 +649,47 @@ const ParkinsonsAssessment = () => {
                       </div>
                     </div>
                   </div>
-                  
+                  <div className='py-5 flex flex-col'>
+                    <h1 className='file-label py-5'>Upload your Lab Report</h1>
+
+                    {!file ? (
+                      <label 
+                        htmlFor="input-file" 
+                        id='drop-area'
+                        onDrop={handleDrop}
+                        onDragOver={handleDragOver}
+                        className="border-2 border-dashed border-gray-400 p-4 rounded-lg cursor-pointer"
+                      >
+                        <input 
+                          type='file' 
+                          accept='application/pdf' 
+                          id='input-file' 
+                          hidden 
+                          onChange={handleFileChange}
+                        />
+                        <div className='flex flex-col items-center justify-center'>
+                          <img src='/508-icon.png' height={60} width={60} alt="upload" />
+                          <p className='pt-4 text-center text-black '>
+                            Drag and drop or click here<br/>to upload lab report
+                          </p>
+                        </div>
+                      </label>
+                    ) : (
+                      <div className="flex items-center justify-between px-4 py-2 bg-gray-100 rounded border border-gray-300">
+                        <span className="text-sm text-gray-800">{file.name}</span>
+                        <button 
+                          onClick={handleDelete} 
+                          className="text-red-500 hover:text-red-700 text-sm font-semibold ml-4"
+                        >
+                          ✕ Remove
+                        </button>
+                      </div>
+                    )}
+                </div>
+                <Button  type="button" onClick={()=>{handleGetParkinsonsMetrics(file)}} className="bg-health-ocean hover:bg-blue-700">
+                 Get Metrics
+                </Button>
+
                   <div className="px-4 py-3 bg-green-50 border border-green-100 rounded-md flex items-start">
                     <Info className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
                     <p className="text-sm text-green-700">

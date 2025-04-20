@@ -1,0 +1,11 @@
+Flask
+flask-cors
+PyPDF2
+groq
+python-dotenv
+pdfplumber 
+pytesseract 
+pdf2image
+transformers
+sentencepiece 
+torch

@@ -7,7 +7,6 @@ import {
   Menu, 
   X 
 } from 'lucide-react';
-import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 const Header = () => {
@@ -37,7 +36,7 @@ const Header = () => {
           </Link>
           <div className="flex items-center space-x-2">
             <ThemeToggle />
-            <LanguageSwitcher />
+           
           </div>
         </nav>
         
@@ -91,9 +90,7 @@ const Header = () => {
             >
               Parkinson's
             </Link>
-            <div className="py-2">
-              <LanguageSwitcher />
-            </div>
+            
           </div>
         </div>
       )}

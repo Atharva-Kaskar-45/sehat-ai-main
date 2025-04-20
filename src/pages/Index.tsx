@@ -43,7 +43,7 @@ const Home = () => {
               <h1 className="text-4xl md:text-5xl font-bold text-sehat-dark mb-4">
                 AI-Powered Health Risk Assessment
               </h1>
-              <p className="text-lg text-gray-700 mb-8">
+              <p className="text-lg text-black mb-8">
                 Predict your risk for diabetes, heart disease, and Parkinson's disease
                 with our advanced AI algorithms. Get personalized insights and actionable
                 recommendations.
@@ -313,14 +313,7 @@ const Home = () => {
               <BarChart3 className="mr-2 h-5 w-5" />
               Start Assessment
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline"
-              onClick={handleViewSampleReport}
-            >
-              <FileText className="mr-2 h-5 w-5" />
-              View Sample Report
-            </Button>
+            
           </div>
         </div>
       </section>

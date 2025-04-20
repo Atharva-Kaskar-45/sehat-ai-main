@@ -41,49 +41,25 @@ const Footer = () => {
                   Parkinson's
                 </Link>
               </li>
-              <li>
-                <Link to="/reports" className="text-gray-300 hover:text-sehat-primary transition">
-                  Reports
-                </Link>
-              </li>
+              
             </ul>
           </div>
           
-          <div>
-            <h3 className="font-semibold text-lg mb-4">Legal</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/privacy-policy" className="text-gray-300 hover:text-sehat-primary transition">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link to="/terms" className="text-gray-300 hover:text-sehat-primary transition">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link to="/disclaimer" className="text-gray-300 hover:text-sehat-primary transition">
-                  Medical Disclaimer
-                </Link>
-              </li>
-            </ul>
-          </div>
           
           <div>
             <h3 className="font-semibold text-lg mb-4">Contact</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
-                <Mail className="h-5 w-5 mr-2 mt-0.5 text-sehat-primary" />
-                <span className="text-gray-300">support@sehatai.health</span>
+                <span className="text-gray-300">Atharva Kaskar</span>
               </li>
               <li className="flex items-start">
-                <Phone className="h-5 w-5 mr-2 mt-0.5 text-sehat-primary" />
-                <span className="text-gray-300">+1 (800) 123-4567</span>
+                <span className="text-gray-300">Piyush Naik</span>
               </li>
               <li className="flex items-start">
-                <MapPin className="h-5 w-5 mr-2 mt-0.5 text-sehat-primary" />
-                <span className="text-gray-300">123 Health Avenue, Medical District, CA 90210</span>
+                <span className="text-gray-300">Sainath Redekar</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-gray-300">Kanya Vagal</span>
               </li>
             </ul>
           </div>

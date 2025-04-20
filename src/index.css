@@ -198,7 +198,34 @@
       color: #d1d5db;
     }
   }
-  
+  .file-label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+    
+    .dark & {
+      color: #0e0e0f;
+    }
+  }
+  #drop-area{
+      width: 100%;
+      height: 200px;
+      padding-left: 15px;
+      padding-top: 30px;
+      padding-bottom: 30px;
+      text-align: center;
+      border-radius: 20px;
+      background: rgb(222, 216, 251);
+  }
+  #image-view{
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    border: 2px dashed #bbb5ff;
+    background: #f7f8ff;
+  }
   .health-form-group {
     margin-bottom: 1rem;
   }

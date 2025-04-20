@@ -65,6 +65,8 @@ interface AssessmentResult {
 }
 
 const Reports = () => {
+  const [language, setLanguage] = useState<'en' | 'hi'>('en');
+const [translatedReport, setTranslatedReport] = useState<any>(null); // store Hindi translation
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const assessmentType = params.get('type') || 'diabetes';
@@ -135,7 +137,8 @@ const Reports = () => {
     insights: [],
     recommendations: []
   });
-  
+  const [prevReport,setprevReport] = useState(result)
+
   useEffect(() => {
     let calculatedResult: {
       risk: 'low' | 'medium' | 'high' | 'unknown';
@@ -232,7 +235,31 @@ const Reports = () => {
         return [];
     }
   };
-  
+  const handleHindiTranslate = async () => {
+    try {
+      setprevReport(result)
+      const response = await fetch('http://localhost:5000/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(result), // Send full result object
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data)
+        setResult(data);
+        setLanguage('hi');
+      } else {
+        console.error('Translation failed');
+      }
+    } catch (error) {
+      console.error('Error translating:', error);
+    }
+  };
+  const handleEnglishTranslate = () => {
+    setResult(prevReport)
+  };
+    
   const getMetricsTable = (): { parameter: string; value: number | string; normalRange: string; status: string; statusColor: string }[] => {
     switch (assessmentType) {
       case 'diabetes': {
@@ -475,6 +502,14 @@ const Reports = () => {
           <div className="flex justify-between items-center mb-6 print:hidden">
             <h1 className="text-2xl font-bold">{getAssessmentTitle()} Results</h1>
             <div className="flex space-x-2">
+            <Button variant="outline" size="sm" onClick={handleHindiTranslate}>
+                <Printer className="h-4 w-4 mr-2" />
+                Translate to Hindi
+              </Button>
+            <Button variant="outline" size="sm" onClick={handleEnglishTranslate}>
+                <Printer className="h-4 w-4 mr-2" />
+                Translate to English
+              </Button>
               <Button variant="outline" size="sm" onClick={handlePrint}>
                 <Printer className="h-4 w-4 mr-2" />
                 Print Report
@@ -536,7 +571,7 @@ const Reports = () => {
                           colorAdjust: 'exact',
                           printColorAdjust: 'exact',
                           // Force visibility in print:
-                          printColor: 'inherit !important'
+                          // printColor: 'inherit !important'
                         }}
                       ></div>
                     </div>
