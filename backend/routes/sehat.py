@@ -5,6 +5,7 @@ import json
 import logging
 import io
 import PyPDF2
+from transformers import MarianMTModel, MarianTokenizer
 from groq import Groq
 from dotenv import load_dotenv
 
@@ -17,22 +18,14 @@ sehat = Blueprint('sehat', __name__)
 # Initialize Groq client
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-# Only load transformers if not on Vercel
-RUNNING_ON_VERCEL = os.environ.get('VERCEL') is not None
-if not RUNNING_ON_VERCEL:
-    try:
-        from transformers import MarianMTModel, MarianTokenizer
-        translation_models = {
-            "hi": {
-                "tokenizer": MarianTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-hi"),
-                "model": MarianMTModel.from_pretrained("Helsinki-NLP/opus-mt-en-hi")
-            },
-        }
-    except ImportError:
-        logger.warning("Transformers not available - translation disabled")
-        translation_models = {}
-else:
-    translation_models = {}
+# Load translation models once to avoid reloading every request
+translation_models = {
+    "hi": {
+        "tokenizer": MarianTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-hi"),
+        "model": MarianMTModel.from_pretrained("Helsinki-NLP/opus-mt-en-hi")
+    },
+    # Add other languages here like "mr", "kn" if needed
+}
 
 def extract_text_from_pdf(file_data):
     try:
@@ -46,10 +39,6 @@ def extract_text_from_pdf(file_data):
         return ""
 
 def translate_text_list(text_list, lang_code):
-    if RUNNING_ON_VERCEL or not translation_models:
-        # Return a simple mock translation for Vercel
-        return [f"[{lang_code.upper()}] {text}" for text in text_list]
-    
     tokenizer = translation_models[lang_code]["tokenizer"]
     model = translation_models[lang_code]["model"]
     inputs = tokenizer(text_list, return_tensors="pt", padding=True, truncation=True)
@@ -69,6 +58,7 @@ def parse_ai_response(ai_response):
 
 def get_ai_extracted_metrics(text, extraction_type="diabetes"):
     try:
+        # Define prompts for each condition
         if extraction_type == "diabetes":
             prompt = f"""You are an AI assistant helping to extract health-related metrics from lab reports.
 
@@ -87,12 +77,53 @@ Return the result strictly as JSON.
 Lab Report:
 {text[:2000]}
 """
-        # Define prompts for other extraction types...
-        # For simplicity, we assume 'diabetes' here, add others as necessary.
+            expected_keys = ["Age", "Gender", "Glucose", "Skin Thickness", "BMI", "Blood Pressure", "Insulin", "Diabetes Pedigree Function"]
 
+        elif extraction_type == "heart":
+            prompt = f"""You are an AI assistant helping to extract heart disease-related health metrics from lab reports.
+
+From the following lab report text, extract the following values **only if they are explicitly mentioned**:
+
+- Age
+- Gender
+- Cholesterol (mg/dL)
+- Blood Pressure (mmHg)
+- Heart Rate (bpm)
+- Exercise (times per week)
+- Smoker (true/false)
+- Diabetic (true/false)
+- Family History (true/false)
+- BMI (kg/m²)
+
+Ensure the output is in valid JSON format and matches this structure exactly:
+
+{{
+  "Age": 45,
+  "Gender": "male",
+  "Cholesterol": 190,
+  "Blood Pressure": 120,
+  "Heart Rate": 72,
+  "Exercise": 3,
+  "Smoker": false,
+  "Diabetic": false,
+  "Family History": false,
+  "BMI": 24.5
+}}
+
+Lab Report:
+{text[:2000]}
+"""
+            expected_keys = ["Age", "Gender", "Cholesterol", "Blood Pressure", "Heart Rate", "Exercise", "Smoker", "Diabetic", "Family History", "BMI"]
+
+        else:
+            return {"error": f"Unsupported extraction type: {extraction_type}"}
+
+        # Call AI model
         chat_completion = client.chat.completions.create(
-            messages=[{"role": "system", "content": "You are a medical data extractor."},
-                      {"role": "user", "content": prompt}],
+            messages=[
+                {"role": "system", "content": "You are a medical data extractor."},
+                {"role": "user", "content": prompt}
+            ],
             model="llama3-70b-8192",
             temperature=0.3,
         )
@@ -100,8 +131,7 @@ Lab Report:
         ai_response = chat_completion.choices[0].message.content
         metrics = parse_ai_response(ai_response)
 
-        expected_keys = ["Age", "Gender", "Glucose", "Skin Thickness", "BMI", "Blood Pressure", "Insulin", "Diabetes Pedigree Function"]
-
+        # Fill missing keys with "Not Found"
         for key in expected_keys:
             if key not in metrics:
                 metrics[key] = "Not Found"
@@ -111,6 +141,7 @@ Lab Report:
     except Exception as e:
         logger.error(f"AI metric extraction error: {e}")
         return {"error": "AI extraction failed"}
+
 
 @sehat.route('/extract-health-metrics', methods=['POST'])
 def extract_metrics():
