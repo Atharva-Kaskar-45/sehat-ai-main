@@ -4,6 +4,6 @@ PyPDF2
 groq
 python-dotenv
 transformers
-sentencepiece 
+sentencepiece
 torch
 gunicorn
