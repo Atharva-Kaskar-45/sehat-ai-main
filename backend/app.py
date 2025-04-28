@@ -1,15 +1,16 @@
 from flask import Flask
-from routes.sehat import sehat  # adjust import if file is elsewhere
+from routes.sehat import sehat
 from flask_cors import CORS
 import logging
 import os
 
 app = Flask(__name__)
-CORS(app)  # enable CORS for frontend
+CORS(app)
 
 # Register blueprint
 app.register_blueprint(sehat, url_prefix='/api')
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get('PORT', 5000))  # 👈 take PORT from environment (Render will provide it)
+    app.run(host='0.0.0.0', port=port, debug=True)  # 👈 host=0.0.0.0 for Render
