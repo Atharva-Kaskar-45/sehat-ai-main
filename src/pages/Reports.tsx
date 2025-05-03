@@ -257,10 +257,121 @@ const Reports = () => {
             status: data.glucose >= 126 ? 'Elevated' : data.glucose >= 100 ? 'Elevated' : 'Normal',
             statusColor: data.glucose >= 126 ? '#ff4500' : data.glucose >= 100 ? '#ffad33' : '#2ecc71'
           },
-          // ... (other diabetes metrics)
+          { 
+            parameter: 'BMI', 
+            value: data.bmi.toFixed(1), 
+            normalRange: '18.5-24.9', 
+            status: data.bmi >= 30 ? 'Obese' : data.bmi >= 25 ? 'Overweight' : data.bmi < 18.5 ? 'Underweight' : 'Normal',
+            statusColor: data.bmi >= 30 ? '#ff4500' : data.bmi >= 25 ? '#ffad33' : data.bmi < 18.5 ? '#3498db' : '#2ecc71'
+          },
+          { 
+            parameter: 'Blood Pressure', 
+            value: `${data.bloodPressure} mmHg`, 
+            normalRange: '120/80 mmHg', 
+            status: data.bloodPressure >= 140 ? 'Elevated' : data.bloodPressure >= 130 ? 'Elevated' : 'Normal',
+            statusColor: data.bloodPressure >= 140 ? '#ff4500' : data.bloodPressure >= 130 ? '#ffad33' : '#2ecc71'
+          },
+          { 
+            parameter: 'Insulin', 
+            value: `${data.insulin} μU/mL`, 
+            normalRange: '2-25 μU/mL', 
+            status: data.insulin > 25 ? 'Elevated' : 'Normal',
+            statusColor: data.insulin > 25 ? '#ff4500' : '#2ecc71' 
+          },
+          { 
+            parameter: 'Diabetes Pedigree', 
+            value: data.diabetesPedigree.toFixed(2), 
+            normalRange: '<0.5', 
+            status: data.diabetesPedigree >= 0.8 ? 'Elevated' : data.diabetesPedigree >= 0.5 ? 'Elevated' : 'Normal',
+            statusColor: data.diabetesPedigree >= 0.8 ? '#ff4500' : data.diabetesPedigree >= 0.5 ? '#ffad33' : '#2ecc71'
+          }
         ];
       }
-      // ... (other assessment types)
+      case 'heartDisease': {
+        const data = assessmentData.heartDisease;
+        if (!data) return [];
+        
+        return [
+          { 
+            parameter: 'Cholesterol', 
+            value: `${data.cholesterol} mg/dL`, 
+            normalRange: '<200 mg/dL', 
+            status: data.cholesterol >= 240 ? 'Elevated' : data.cholesterol >= 200 ? 'Elevated' : 'Normal',
+            statusColor: data.cholesterol >= 240 ? '#ff4500' : data.cholesterol >= 200 ? '#ffad33' : '#2ecc71'
+          },
+          { 
+            parameter: 'Blood Pressure', 
+            value: `${data.bloodPressure} mmHg`, 
+            normalRange: '120/80 mmHg', 
+            status: data.bloodPressure >= 140 ? 'Elevated' : data.bloodPressure >= 130 ? 'Elevated' : 'Normal',
+            statusColor: data.bloodPressure >= 140 ? '#ff4500' : data.bloodPressure >= 130 ? '#ffad33' : '#2ecc71'
+          },
+          { 
+            parameter: 'Heart Rate', 
+            value: `${data.heartRate} bpm`, 
+            normalRange: '60-100 bpm', 
+            status: data.heartRate > 100 ? 'Elevated' : data.heartRate < 60 ? 'Low' : 'Normal',
+            statusColor: data.heartRate > 100 ? '#ff4500' : data.heartRate < 60 ? '#3498db' : '#2ecc71'
+          },
+          { 
+            parameter: 'Exercise Level', 
+            value: `${data.exercise} days/week`, 
+            normalRange: '3-5 days/week', 
+            status: data.exercise < 2 ? 'Low' : 'Normal',
+            statusColor: data.exercise < 2 ? '#ff4500' : '#2ecc71'
+          },
+          { 
+            parameter: 'Smoking Status', 
+            value: data.smoker ? 'Yes' : 'No', 
+            normalRange: 'No', 
+            status: data.smoker ? 'Elevated Risk' : 'Normal',
+            statusColor: data.smoker ? '#ff4500' : '#2ecc71'
+          }
+        ];
+      }
+      
+      case 'parkinsons': {
+        const data = assessmentData.parkinsons;
+        if (!data) return [];
+        
+        return [
+          { 
+            parameter: 'Vocal Jitter (MDVP_Jitter)', 
+            value: data.MDVP_Jitter.toFixed(5), 
+            normalRange: '<0.006', 
+            status: data.MDVP_Jitter >= 0.01 ? 'Elevated' : data.MDVP_Jitter >= 0.006 ? 'Elevated' : 'Normal',
+            statusColor: data.MDVP_Jitter >= 0.01 ? '#ff4500' : data.MDVP_Jitter >= 0.006 ? '#ffad33' : '#2ecc71'
+          },
+          { 
+            parameter: 'Vocal Shimmer (MDVP_Shimmer)', 
+            value: data.MDVP_Shimmer.toFixed(5), 
+            normalRange: '<0.04', 
+            status: data.MDVP_Shimmer >= 0.06 ? 'Elevated' : data.MDVP_Shimmer >= 0.04 ? 'Elevated' : 'Normal',
+            statusColor: data.MDVP_Shimmer >= 0.06 ? '#ff4500' : data.MDVP_Shimmer >= 0.04 ? '#ffad33' : '#2ecc71'
+          },
+          { 
+            parameter: 'Harmonics-to-Noise Ratio (HNR)', 
+            value: `${data.HNR.toFixed(2)} dB`, 
+            normalRange: '>20 dB', 
+            status: data.HNR <= 15 ? 'Low' : data.HNR <= 20 ? 'Low' : 'Normal',
+            statusColor: data.HNR <= 15 ? '#ff4500' : data.HNR <= 20 ? '#ffad33' : '#2ecc71'
+          },
+          { 
+            parameter: 'RPDE', 
+            value: data.RPDE.toFixed(5), 
+            normalRange: '<0.5', 
+            status: data.RPDE >= 0.65 ? 'Elevated' : data.RPDE >= 0.5 ? 'Elevated' : 'Normal',
+            statusColor: data.RPDE >= 0.65 ? '#ff4500' : data.RPDE >= 0.5 ? '#ffad33' : '#2ecc71'
+          },
+          { 
+            parameter: 'PPE (Pitch Period Entropy)', 
+            value: data.PPE.toFixed(5), 
+            normalRange: '<0.15', 
+            status: data.PPE >= 0.2 ? 'Elevated' : data.PPE >= 0.15 ? 'Elevated' : 'Normal',
+            statusColor: data.PPE >= 0.2 ? '#ff4500' : data.PPE >= 0.15 ? '#ffad33' : '#2ecc71'
+          }
+        ];
+      }
       default:
         return [];
     }
@@ -272,13 +383,59 @@ const Reports = () => {
         const data = assessmentData.diabetes;
         if (!data) return [];
         const glucoseRisk = data.glucose >= 200 ? 100 : data.glucose >= 140 ? 70 : data.glucose >= 100 ? 40 : 20;
-        // ... (other risk calculations)
+        const bmiRisk = data.bmi >= 30 ? 100 : data.bmi >= 25 ? 60 : data.bmi >= 18.5 ? 20 : 40;
+        const bpRisk = data.bloodPressure >= 90 ? 80 : data.bloodPressure >= 80 ? 50 : 20;
+        const familyRisk = data.diabetesPedigree >= 0.8 ? 100 : data.diabetesPedigree >= 0.5 ? 60 : 30;
+        const ageRisk = data.age > 65 ? 90 : data.age > 45 ? 70 : data.age > 35 ? 40 : 20;
         return [
           { name: 'Blood Glucose', value: glucoseRisk, actual: data.glucose, unit: 'mg/dL' },
-          // ... (other risk factors)
+          { name: 'BMI', value: bmiRisk, actual: data.bmi, unit: 'kg/m²' },
+          { name: 'Blood Pressure', value: bpRisk, actual: data.bloodPressure, unit: 'mmHg' },
+          { name: 'Family History', value: familyRisk, actual: data.diabetesPedigree.toFixed(2), unit: 'score' },
+          { name: 'Age Factor', value: ageRisk, actual: data.age, unit: 'years' }
         ];
       }
-      // ... (other assessment types)
+      case 'heartDisease': {
+        const data = assessmentData.heartDisease;
+        if (!data) return [];
+        
+        const cholesterolRisk = data.cholesterol >= 240 ? 100 : data.cholesterol >= 200 ? 70 : 30;
+        const bpRisk = data.bloodPressure >= 140 ? 100 : data.bloodPressure >= 120 ? 70 : 30;
+        const ageRisk = data.age > 65 ? 100 : data.age > 45 ? 70 : 30;
+        const heartRateRisk = data.heartRate > 100 ? 80 : data.heartRate > 80 ? 50 : 20;
+        const exerciseRisk = data.exercise < 2 ? 80 : data.exercise < 4 ? 40 : 20;
+        const geneticRisk = data.familyHistory ? 90 : 10;
+        
+        return [
+          { name: 'Cholesterol', value: cholesterolRisk, actual: data.cholesterol, unit: 'mg/dL' },
+          { name: 'Blood Pressure', value: bpRisk, actual: data.bloodPressure, unit: 'mmHg' },
+          { name: 'Age Factor', value: ageRisk, actual: data.age, unit: 'years' },
+          { name: 'Heart Rate', value: heartRateRisk, actual: data.heartRate, unit: 'bpm' },
+          { name: 'Exercise Level', value: exerciseRisk, actual: data.exercise, unit: 'days/week' },
+          { name: 'Family History', value: geneticRisk, actual: data.familyHistory ? 'Yes' : 'No', unit: '' }
+        ];
+      }
+      
+      case 'parkinsons': {
+        const data = assessmentData.parkinsons;
+        if (!data) return [];
+        
+        const jitterRisk = data.MDVP_Jitter >= 0.01 ? 90 : data.MDVP_Jitter >= 0.006 ? 60 : 30;
+        const shimmerRisk = data.MDVP_Shimmer >= 0.06 ? 90 : data.MDVP_Shimmer >= 0.04 ? 60 : 30;
+        const hnrRisk = data.HNR <= 15 ? 90 : data.HNR <= 20 ? 60 : 30;
+        const rpdeRisk = data.RPDE >= 0.65 ? 90 : data.RPDE >= 0.5 ? 60 : 30;
+        const dfaRisk = data.DFA <= 0.6 ? 90 : data.DFA <= 0.7 ? 50 : 30;
+        const ppeRisk = data.PPE >= 0.2 ? 90 : data.PPE >= 0.15 ? 60 : 30;
+        
+        return [
+          { name: 'Vocal Jitter', value: jitterRisk, actual: data.MDVP_Jitter.toFixed(5), unit: '' },
+          { name: 'Vocal Shimmer', value: shimmerRisk, actual: data.MDVP_Shimmer.toFixed(5), unit: '' },
+          { name: 'Voice HNR', value: hnrRisk, actual: data.HNR.toFixed(2), unit: 'dB' },
+          { name: 'RPDE', value: rpdeRisk, actual: data.RPDE.toFixed(5), unit: '' },
+          { name: 'DFA', value: dfaRisk, actual: data.DFA.toFixed(5), unit: '' },
+          { name: 'PPE', value: ppeRisk, actual: data.PPE.toFixed(5), unit: '' }
+        ];
+      }
       default:
         return [];
     }
