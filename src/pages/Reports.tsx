@@ -571,7 +571,7 @@ const [translatedReport, setTranslatedReport] = useState<any>(null); // store Hi
                           colorAdjust: 'exact',
                           printColorAdjust: 'exact',
                           // Force visibility in print:
-                          printColor: 'inherit !important'
+                          // printColor: 'inherit !important'
                         }}
                       ></div>
                     </div>
