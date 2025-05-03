@@ -567,6 +567,8 @@ const [translatedReport, setTranslatedReport] = useState<any>(null); // store Hi
                         style={{ 
                           width: `${result.score}%`,
                           // Add these print-specific styles:
+                          backgroundColor: result.risk === 'low' ? '#10B981' : 
+                                           result.risk === 'medium' ? '#F59E0B' : '#EF4444',
                           WebkitPrintColorAdjust: 'exact',
                           colorAdjust: 'exact',
                           printColorAdjust: 'exact',
