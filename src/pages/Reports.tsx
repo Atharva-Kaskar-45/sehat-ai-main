@@ -557,7 +557,7 @@ const [translatedReport, setTranslatedReport] = useState<any>(null); // store Hi
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-1 print:bg-gray-300 print:dark:bg-gray-300">
                       <div 
-                        className={`h-2.5 rounded-full print:!bg-opacity-700 ${
+                        className={`h-2.5 rounded-full print:!bg-opacity-100 ${
                           result.risk === 'low' 
                             ? 'bg-green-500 print:bg-green-600' 
                             : result.risk === 'medium' 
