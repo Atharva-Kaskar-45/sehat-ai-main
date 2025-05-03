@@ -201,6 +201,24 @@
     font-size: 10px !important;
   }
 
+  .print-new-page {
+    page-break-before: always !important;
+    break-before: page !important;
+    margin-top: 0 !important;
+  }
+
+  /* NEW: Keep tables intact on pages */
+  .print-table-container {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* NEW: Table row protection */
+  .print-table-container tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
   /* Force full width for print */
   .print\:w-full {
     width: 100% !important;
