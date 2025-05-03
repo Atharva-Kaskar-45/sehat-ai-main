@@ -147,6 +147,7 @@
   body, p, span, h1, h2, h3, h4, td, th, li {
     color: black !important;
     print-color-adjust: exact;
+    -webkit-print-color-adjust: exact !important;
   }
   
   table, tr, td, th {
