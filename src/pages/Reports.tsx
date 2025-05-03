@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
-import RiskIndicator from '@/components/ui/RiskIndicator';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { 
@@ -15,6 +14,7 @@ import {
   generateRecommendations 
 } from '@/utils/riskAssessment';
 
+// ... (keep all your existing interfaces)
 interface AssessmentData {
   diabetes?: {
     age: number;
@@ -64,7 +64,9 @@ interface AssessmentResult {
   recommendations: string[];
 }
 
+
 const Reports = () => {
+  // ... (keep all your existing state and logic until the return statement)
   const [language, setLanguage] = useState<'en' | 'hi'>('en');
 const [translatedReport, setTranslatedReport] = useState<any>(null); // store Hindi translation
   const location = useLocation();
@@ -476,247 +478,94 @@ const [translatedReport, setTranslatedReport] = useState<any>(null); // store Hi
         return 'Health Assessment Report';
     }
   };
-  
-  const handlePrint = () => {
-    document.documentElement.classList.add('force-light-print');
-    window.print();
-    setTimeout(() => {
-      document.documentElement.classList.remove('force-light-print');
-    }, 500);
-  };
-  
-  const today = new Date();
-  const formattedDate = today.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+    
 
-  const riskFactorData = getRiskFactorData();
-  const metricsTable = getMetricsTable();
+  // Updated handlePrint function
+  const handlePrint = () => {
+    const originalStyles = document.documentElement.style;
+    document.documentElement.style.setProperty('color-adjust', 'exact', 'important');
+    document.documentElement.classList.add('force-light-print');
+    
+    // Small delay to ensure styles are applied before printing
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => {
+        document.documentElement.style.cssText = originalStyles;
+        document.documentElement.classList.remove('force-light-print');
+      }, 500);
+    }, 100);
+  };
+
+  // ... (keep all your existing functions)
 
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-8 print:py-0 print:px-0">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex justify-between items-center mb-6 print:hidden">
-            <h1 className="text-2xl font-bold">{getAssessmentTitle()} Results</h1>
-            <div className="flex space-x-2">
-            <Button variant="outline" size="sm" onClick={handleHindiTranslate}>
-                <Printer className="h-4 w-4 mr-2" />
-                Translate to Hindi
-              </Button>
-            <Button variant="outline" size="sm" onClick={handleEnglishTranslate}>
-                <Printer className="h-4 w-4 mr-2" />
-                Translate to English
-              </Button>
-              <Button variant="outline" size="sm" onClick={handlePrint}>
-                <Printer className="h-4 w-4 mr-2" />
-                Print Report
-              </Button>
-            </div>
-          </div>
-          
-          <div 
-            ref={printRef}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border print:border-none print:shadow-none"
-          >
-            <div className="p-6 border-b print:hidden dark:border-gray-700">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h1 className="text-2xl font-bold">{getAssessmentTitle()}</h1>
-                  <p className="text-gray-600 dark:text-gray-300">Report generated on {formattedDate}</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">{result.score}/100</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-300 font-medium capitalize">{result.risk} Risk</div>
-                </div>
+        {/* ... (keep all existing JSX until the risk assessment bar) */}
+
+        {/* Updated Risk Assessment Bar */}
+        <div className="print:block mb-8 print:mb-6 print:break-inside-avoid">
+          <h2 className="text-xl font-semibold mb-4 print:text-lg print:text-black">Your Risk Assessment</h2>
+          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg print:bg-gray-100">
+            <div className="mb-4">
+              <div className="flex justify-between mb-2">
+                <span className="print:text-black">Risk Level:</span>
+                <span className="font-medium capitalize print:text-black">{result.risk}</span>
+              </div>
+              
+              {/* Replaced Tailwind-based bar with SVG for reliable printing */}
+              <div className="w-full bg-gray-200 rounded-full h-2.5 mb-1 print:bg-gray-300">
+                <svg 
+                  width="100%" 
+                  height="10" 
+                  viewBox="0 0 100 10"
+                  preserveAspectRatio="none"
+                  className="rounded-full"
+                >
+                  <rect 
+                    width="100%" 
+                    height="10" 
+                    rx="5" 
+                    ry="5" 
+                    fill="#e5e7eb" // bg-gray-200
+                    className="print:fill-gray-300"
+                  />
+                  <rect 
+                    width={`${result.score}%`} 
+                    height="10" 
+                    rx="5" 
+                    ry="5" 
+                    fill={
+                      result.risk === 'low' ? '#10B981' : 
+                      result.risk === 'medium' ? '#F59E0B' : '#EF4444'
+                    }
+                    className="print:!fill-opacity-100"
+                    style={{
+                      transition: 'width 0.5s ease',
+                      WebkitPrintColorAdjust: 'exact',
+                      printColorAdjust: 'exact'
+                    }}
+                  />
+                </svg>
+              </div>
+              
+              <div className="flex justify-between text-xs print:text-black">
+                <span>Low Risk</span>
+                <span>Medium Risk</span>
+                <span>High Risk</span>
               </div>
             </div>
             
-            <div className="p-6 print:p-0">
-              <div className="hidden print:flex print:justify-between print:items-center print:mb-4 print:pb-2 print:border-b print:border-gray-300">
-                <div>
-                  <h1 className="text-2xl font-bold text-black">{getAssessmentTitle()}</h1>
-                  <p className="text-gray-700">Report generated on {formattedDate}</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-black">{result.score}/100</div>
-                  <div className="text-sm text-gray-700 font-medium capitalize">{result.risk} Risk</div>
-                </div>
-              </div>
-              
-              <div className="print:block mb-8 print:mb-6 print:break-inside-avoid">
-                <h2 className="text-xl font-semibold mb-4 print:text-lg print:text-black">Your Risk Assessment</h2>
-                
-                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg print:bg-gray-100">
-                  <div className="mb-4">
-                    <div className="flex justify-between mb-2">
-                      <span className="print:text-black">Risk Level:</span>
-                      <span className="font-medium capitalize print:text-black">{result.risk}</span>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-1 print:bg-gray-300 print:dark:bg-gray-300">
-                      <div 
-                        className={`h-2.5 rounded-full print:!bg-opacity-100 ${
-                          result.risk === 'low' 
-                            ? 'bg-green-500 print:bg-green-600' 
-                            : result.risk === 'medium' 
-                              ? 'bg-yellow-500 print:bg-yellow-600' 
-                              : 'bg-red-500 print:bg-red-600'
-                        }`}
-                        style={{ 
-                          width: `${result.score}%`,
-                          // Add these print-specific styles:
-                          backgroundColor: result.risk === 'low' ? '#10B981' : 
-                                           result.risk === 'medium' ? '#F59E0B' : '#EF4444',
-                          WebkitPrintColorAdjust: 'exact',
-                          colorAdjust: 'exact',
-                          printColorAdjust: 'exact',
-                          // Force visibility in print:
-                          // printColor: 'inherit !important'
-                        }}
-                      ></div>
-                    </div>
-                    <div className="flex justify-between text-xs print:text-black">
-                      <span>Low Risk</span>
-                      <span>Medium Risk</span>
-                      <span>High Risk</span>
-                    </div>
-                  </div>
-                  
-                  <div className="text-sm">
-                    <p className="mb-2 print:text-black"><strong>Your score:</strong> {result.score} out of 100</p>
-                    <p className="text-gray-700 dark:text-gray-300 print:text-black">
-                      This assessment is based on the information you provided and should not replace professional medical advice.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="mb-8 print:mb-6 print:break-inside-avoid">
-                <h2 className="text-xl font-semibold mb-4 print:text-lg">Key Insights</h2>
-                <div className="space-y-2">
-                  {result.insights.length > 0 ? (
-                    result.insights.map((insight, index) => (
-                      <div key={index} className="flex items-start">
-                        <Info className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
-                        <p className="dark:text-gray-200">{insight}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="dark:text-gray-200">No specific insights available for this assessment.</p>
-                  )}
-                </div>
-              </div>
-              
-              <div className="mb-8 print:mb-6 print:break-inside-avoid">
-                <Card className="p-4 print:p-3 print:border print:border-gray-300 dark:border-gray-700">
-                  <h3 className="text-lg font-medium mb-2 print:text-base">Key Risk Factors</h3>
-                  <div className="h-64 print:h-48">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={riskFactorData}
-                        margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
-                        barSize={20}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#555" strokeOpacity={0.2} />
-                        <XAxis 
-                          dataKey="name" 
-                          fontSize={11} 
-                          angle={-45} 
-                          textAnchor="end"
-                          height={60}
-                          tick={{ fill: '#555' }}
-                          tickLine={{ stroke: '#555' }}
-                        />
-                        <YAxis 
-                          domain={[0, 100]} 
-                          fontSize={12} 
-                          tick={{ fill: '#555' }}
-                          tickLine={{ stroke: '#555' }}
-                          label={{ 
-                            value: 'Risk Level (%)', 
-                            angle: -90, 
-                            position: 'insideLeft',
-                            style: { fontSize: '12px', fill: '#555' }
-                          }} 
-                        />
-                        <Tooltip
-                          formatter={(value: number, name: string, props: any) => {
-                            const item = props.payload;
-                            return [`${item.actual} ${item.unit}`, 'Actual Value'];
-                          }}
-                          contentStyle={{ backgroundColor: 'rgba(255,255,255,0.95)', color: '#333', border: '1px solid #ddd' }}
-                        />
-                        <Bar 
-                          dataKey="value" 
-                          name="Risk Factor"
-                          fill="#8884d8" 
-                          radius={[4, 4, 0, 0]}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </Card>
-              </div>
-              
-              <div className="mb-8 print:mb-6 grid grid-cols-1 gap-6 print:gap-4 print:break-inside-avoid">
-                <Card className="p-4 print:p-3 print:border print:border-gray-300 dark:border-gray-700 overflow-x-auto">
-                  <h3 className="text-lg font-medium mb-4 print:text-base">Parameters Analysis</h3>
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-700">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Parameter</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Value</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Normal Range</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                      {metricsTable.map((metric, index) => (
-                        <tr key={index}>
-                          <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-200">{metric.parameter}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-200">{metric.value}</td>
-                          <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">{metric.normalRange}</td>
-                          <td className="px-4 py-3 text-sm">
-                            <span 
-                              className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white" 
-                              style={{ 
-                                backgroundColor: metric.statusColor,
-                                padding: '0.25rem 0.75rem'
-                              }}
-                            >
-                              {metric.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </Card>
-              </div>
-              
-              <div className="mb-8 print:mb-6 print:break-inside-avoid">
-                <h2 className="text-xl font-semibold mb-4 print:text-lg">Recommendations</h2>
-                <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg print:bg-blue-50 print:border print:border-blue-100">
-                  <ul className="list-disc pl-5 space-y-2 dark:text-gray-200">
-                    {result.recommendations && result.recommendations.length > 0 ? (
-                      result.recommendations.map((rec, index) => (
-                        <li key={index}>{rec}</li>
-                      ))
-                    ) : (
-                      <li>No specific recommendations available for this assessment.</li>
-                    )}
-                  </ul>
-                </div>
-              </div>
-              
-              <div className="text-sm text-gray-600 dark:text-gray-400 mt-8 border-t dark:border-gray-700 pt-4 print:text-xs print:mt-4">
-                <p><strong>Disclaimer:</strong> This health assessment is provided for informational purposes only and does not constitute medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider for any health-related concerns or before making any changes to your health regimen.</p>
-              </div>
+            <div className="text-sm">
+              <p className="mb-2 print:text-black"><strong>Your score:</strong> {result.score} out of 100</p>
+              <p className="text-gray-700 dark:text-gray-300 print:text-black">
+                This assessment is based on the information you provided and should not replace professional medical advice.
+              </p>
             </div>
           </div>
         </div>
+
+        {/* ... (keep all remaining existing JSX) */}
       </div>
     </MainLayout>
   );
