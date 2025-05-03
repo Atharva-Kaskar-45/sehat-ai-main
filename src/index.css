@@ -6,34 +6,24 @@
   :root {
     --background: 260 30% 98%;
     --foreground: 222.2 84% 4.9%;
-
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
     --primary: 260 60% 75%;
     --primary-foreground: 210 40% 98%;
-
     --secondary: 260 25% 54%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
     --accent: 260 80% 95%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 260 60% 75%;
-
     --radius: 0.5rem;
-
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -47,33 +37,23 @@
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 260 60% 75%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 75.1%;
-
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 40.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
-
-    /* Sidebar dark mode improvements */
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 0 0% 95%;
     --sidebar-primary: 224.3 76.3% 60%;
@@ -94,6 +74,7 @@
     @apply bg-background text-foreground transition-colors duration-300;
   }
   
+  /* Dark mode overrides */
   .dark .text-gray-600,
   .dark .text-gray-700,
   .dark .text-gray-400,
@@ -107,140 +88,102 @@
   }
   
   .dark .bg-white {
-    background-color: rgb(31 41 55); /* Using direct color value instead of @apply */
+    background-color: rgb(31 41 55);
   }
   
   .dark .bg-gray-50,
   .dark .bg-gray-100 {
-    background-color: rgb(31 41 55); /* Using direct color value instead of @apply */
+    background-color: rgb(31 41 55);
   }
   
   .dark .shadow-md,
   .dark .shadow-lg {
-    @apply shadow-[0_4px_14px_0_rgba(0,0,0,0.5)];
-  }
-  
-  /* Force light mode when printing */
-  .force-light-print, 
-  .force-light-print * {
-    background-color: white !important;
-    color: black !important;
-    border-color: #ddd !important;
+    box-shadow: 0 4px 14px 0 rgba(0,0,0,0.5);
   }
 }
 
-/* Print styles outside of @layer to avoid circular dependencies */
+/* ================= PRINT STYLES ================= */
 @media print {
-  /* Hide footer and other elements when printing */
-  footer, 
+  /* Nuclear option for print color reliability */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Force light mode */
+  body,
+  body.dark,
+  .force-light-print,
+  .force-light-print * {
+    background: white !important;
+    color: black !important;
+    border-color: #e5e7eb !important;
+  }
+
+  /* Specific fixes for risk assessment bar */
+  .risk-bar,
+  .risk-bar-fill {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Ensure all backgrounds print */
+  [class*="bg-"],
+  [class*="bg-"] * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide unwanted elements */
+  footer,
+  .no-print,
   .print\:hidden {
     display: none !important;
   }
-  
-  /* Ensure the document is in light mode when printing */
-  html.dark {
-    filter: none !important;
-    -webkit-filter: none !important;
-  }
-  
-  /* Ensure good contrast for print */
-  body, p, span, h1, h2, h3, h4, td, th, li {
-    color: black !important;
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact !important;
-  }
-  
+
+  /* Table styling */
   table, tr, td, th {
-    border-color: #333 !important;
-  }
-  
-  /* Override any dark mode styles when printing */
-  .dark .bg-gray-800,
-  .dark .bg-gray-700 {
-    background-color: white !important;
-  }
-  
-  .dark * {
-    color: black !important;
-    background-color: transparent !important;
+    border-color: #d1d5db !important;
   }
 
-    /* Specific fix for risk assessment bar */
-  .risk-bar, .risk-bar * {
-    background-color: inherit !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* Ensure progress bars are visible */
-  [class*="bg-"] {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  /* Chart containers */
+  .recharts-wrapper,
+  .recharts-surface {
+    overflow: visible !important;
   }
 }
 
 @layer components {
+  /* Form components */
   .health-input {
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 0.375rem;
-    border-width: 1px;
-    outline: none;
-    background-color: white;
-    
+    @apply w-full p-3 rounded-md border outline-none bg-white;
     &:focus {
-      outline: none;
-      ring-width: 2px;
-      ring-color: #9b87f5;
+      @apply outline-none ring-2 ring-primary;
     }
-    
     .dark & {
-      background-color: rgb(31 41 55);
-      border-color: rgb(55 65 81);
-      color: white;
+      @apply bg-gray-800 border-gray-700 text-white;
     }
   }
-  
+
   .health-label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #4b5563;
-    
+    @apply block mb-1 text-sm font-medium text-gray-600;
     .dark & {
-      color: #d1d5db;
+      @apply text-gray-300;
     }
   }
-  .file-label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #4b5563;
-    
-    .dark & {
-      color: #0e0e0f;
-    }
+
+  /* File upload area */
+  #drop-area {
+    @apply w-full h-48 pl-4 pt-8 pb-8 text-center rounded-xl bg-purple-50;
   }
-  #drop-area{
-      width: 100%;
-      height: 200px;
-      padding-left: 15px;
-      padding-top: 30px;
-      padding-bottom: 30px;
-      text-align: center;
-      border-radius: 20px;
-      background: rgb(222, 216, 251);
+
+  #image-view {
+    @apply w-full h-full rounded-xl border-2 border-dashed border-purple-200 bg-gray-50;
   }
-  #image-view{
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    border: 2px dashed #bbb5ff;
-    background: #f7f8ff;
-  }
+
   .health-form-group {
-    margin-bottom: 1rem;
+    @apply mb-4;
   }
 }
