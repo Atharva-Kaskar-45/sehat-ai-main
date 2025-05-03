@@ -100,38 +100,63 @@
   .dark .shadow-lg {
     box-shadow: 0 4px 14px 0 rgba(0,0,0,0.5);
   }
+
+  /* SVG risk bar colors for dark mode */
+  .dark .risk-bar-bg {
+    fill: rgb(55 65 81) !important; /* gray-700 */
+  }
 }
 
 /* ================= PRINT STYLES ================= */
 @media print {
-  /* Nuclear option for print color reliability */
-  * {
+  /* Force print styles at root level */
+  :root {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
   }
 
-  /* Force light mode */
+  /* Force light mode for all elements */
   body,
   body.dark,
-  .force-light-print,
-  .force-light-print * {
-    background: white !important;
+  body.printing,
+  body.printing * {
+    background-color: white !important;
     color: black !important;
-    border-color: #e5e7eb !important;
-  }
-
-  /* Specific fixes for risk assessment bar */
-  .risk-bar,
-  .risk-bar-fill {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    color-adjust: exact !important;
   }
 
   /* Ensure all backgrounds print */
-  [class*="bg-"],
-  [class*="bg-"] * {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Risk bar specific styles */
+  .risk-bar-container {
+    background-color: #e5e7eb !important; /* bg-gray-200 */
+  }
+
+  .risk-bar-fill {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    fill-opacity: 1 !important;
+  }
+
+  /* Status indicators */
+  .status-indicator {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Chart styling */
+  .recharts-wrapper,
+  .recharts-surface {
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .recharts-bar-rectangle {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -144,14 +169,33 @@
   }
 
   /* Table styling */
-  table, tr, td, th {
-    border-color: #d1d5db !important;
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
   }
 
-  /* Chart containers */
-  .recharts-wrapper,
-  .recharts-surface {
-    overflow: visible !important;
+  th, td {
+    border: 1px solid #d1d5db !important; /* gray-300 */
+    padding: 0.5rem !important;
+  }
+
+  /* Card styling */
+  .card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Force full width for print */
+  .print\:w-full {
+    width: 100% !important;
+  }
+
+  /* Text contrast for print */
+  .text-gray-600,
+  .text-gray-700,
+  .text-gray-400,
+  .text-muted-foreground {
+    color: #4b5563 !important; /* gray-600 */
   }
 }
 
@@ -165,6 +209,11 @@
     .dark & {
       @apply bg-gray-800 border-gray-700 text-white;
     }
+    @media print {
+      background-color: white !important;
+      border-color: #d1d5db !important; /* gray-300 */
+      color: black !important;
+    }
   }
 
   .health-label {
@@ -172,18 +221,49 @@
     .dark & {
       @apply text-gray-300;
     }
+    @media print {
+      color: #4b5563 !important; /* gray-600 */
+    }
   }
 
   /* File upload area */
   #drop-area {
     @apply w-full h-48 pl-4 pt-8 pb-8 text-center rounded-xl bg-purple-50;
+    @media print {
+      background-color: #f3f4f6 !important; /* gray-100 */
+      border-color: #e5e7eb !important; /* gray-200 */
+    }
   }
 
   #image-view {
     @apply w-full h-full rounded-xl border-2 border-dashed border-purple-200 bg-gray-50;
+    @media print {
+      background-color: #f3f4f6 !important; /* gray-100 */
+      border-color: #e5e7eb !important; /* gray-200 */
+    }
   }
 
   .health-form-group {
     @apply mb-4;
+  }
+
+  /* Risk bar component */
+  .risk-bar-container {
+    @apply w-full rounded-full h-2.5 bg-gray-200;
+    .dark & {
+      @apply bg-gray-600;
+    }
+  }
+
+  .risk-bar-fill {
+    @apply h-2.5 rounded-full;
+    transition: width 0.3s ease;
+  }
+
+  /* Status badges */
+  .status-badge {
+    @apply px-2 py-1 text-xs font-semibold rounded-full text-white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
