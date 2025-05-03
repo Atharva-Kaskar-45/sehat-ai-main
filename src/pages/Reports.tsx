@@ -658,7 +658,7 @@ const Reports = () => {
                 </Card>
               </div>
 
-              <div className="mb-8 print:mb-0 print: new-page">
+              <div className="mb-8 print:mb-0 print-new-page print-table-container">
                 <Card className="p-4 print:p-3 print:border print:border-gray-300 dark:border-gray-700 overflow-x-auto">
                   <h3 className="text-lg font-medium mb-4 print:text-base">Parameters Analysis</h3>
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
