@@ -600,18 +600,24 @@ const Reports = () => {
                   )}
                 </div>
               </div>
+
+              <div className="mb-8 print:mb-4 print-chart-wrapper"> {/* Changed margin-bottom */}
+                <Card className="p-4 print:p-2 print:border print:border-gray-300">
+                    <h3 className="text-lg font-medium mb-3 print:text-base print:mb-2">Key Risk Factors</h3>
+                    <div className="h-64 print:h-[180px] print-chart-container"> {/* Fixed height */}
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={riskFactorData}
+                          margin={{ 
+                            top: 10,  // Increased from 5
+                            right: 15, // Increased from 10
+                            left: 25,  // Increased from 10
+                            bottom: 25 // Increased from 5
+                          }}
+                          barSize={18} // Slightly smaller bars
+                        >
               
-              <div className="mb-8 print:mb-6 print:break-inside-avoid">
-                <Card className="p-4 print:p-3 print:border print:border-gray-300 dark:border-gray-700">
-                  <h3 className="text-lg font-medium mb-2 print:text-base">Key Risk Factors</h3>
-                  <div className="h-64 print:h-48">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={riskFactorData}
-                        margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
-                        barSize={20}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#555" strokeOpacity={0.2} />
+                        <CartesianGrid strokeDasharray="3 3" />
                         <XAxis 
                           dataKey="name" 
                           fontSize={11} 
