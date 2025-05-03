@@ -164,6 +164,19 @@
     color: black !important;
     background-color: transparent !important;
   }
+
+    /* Specific fix for risk assessment bar */
+  .risk-bar, .risk-bar * {
+    background-color: inherit !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Ensure progress bars are visible */
+  [class*="bg-"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }
 
 @layer components {
