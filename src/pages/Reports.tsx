@@ -482,14 +482,14 @@ const Reports = () => {
           <div className="flex justify-between items-center mb-6 print:hidden">
             <h1 className="text-2xl font-bold">{getAssessmentTitle()} Results</h1>
             <div className="flex space-x-2">
-              <Button variant="outline" size="sm" onClick={handleHindiTranslate}>
+{/*               <Button variant="outline" size="sm" onClick={handleHindiTranslate}>
                 <Printer className="h-4 w-4 mr-2" />
                 Translate to Hindi
               </Button>
               <Button variant="outline" size="sm" onClick={handleEnglishTranslate}>
                 <Printer className="h-4 w-4 mr-2" />
                 Translate to English
-              </Button>
+              </Button> */}
               <Button variant="outline" size="sm" onClick={handlePrint}>
                 <Printer className="h-4 w-4 mr-2" />
                 Print Report
