@@ -134,6 +134,7 @@
   /* Risk bar specific styles */
   .risk-bar-container {
     background-color: #e5e7eb !important; /* bg-gray-200 */
+    @apply overflow-visible;
   }
 
   .risk-bar-fill {
