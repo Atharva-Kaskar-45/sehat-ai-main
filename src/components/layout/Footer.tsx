@@ -45,21 +45,28 @@ const Footer = () => {
             </ul>
           </div>
           
-          
-          <div>
-            <h3 className="font-semibold text-lg mb-4">Contact</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <span className="text-gray-300">Atharva Kaskar</span>
+
+          <div className="bg-gray-900 p-6 rounded-xl shadow-lg">
+            <h3 className="font-semibold text-xl mb-4 flex items-center gap-2">
+              Made with <span className="animate-pulse text-red-500">❤️</span> by 
+              <span className="text-indigo-400 hover:underline ml-1">Atharva Kaskar</span>
+            </h3>
+            <ul className="space-y-3 text-sm text-gray-400">
+              <li className="flex items-center gap-2 hover:text-white transition duration-300">
+                <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 ..."/> {/* Replace with actual LinkedIn SVG */}
+                </svg>
+                <a href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer">
+                  LinkedIn
+                </a>
               </li>
-              <li className="flex items-start">
-                <span className="text-gray-300">Piyush Naik</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-gray-300">Sainath Redekar</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-gray-300">Kanya Vagal</span>
+              <li className="flex items-center gap-2 hover:text-white transition duration-300">
+                <svg className="w-5 h-5 text-gray-200" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 .297c-6.63 0-12 5.373-12 12 ..."/> {/* Replace with actual GitHub SVG */}
+                </svg>
+                <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer">
+                  GitHub
+                </a>
               </li>
             </ul>
           </div>
