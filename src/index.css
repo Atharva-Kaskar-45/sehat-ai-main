@@ -283,14 +283,14 @@
 
   /* Risk bar component */
   .risk-bar-container {
-    @apply w-full rounded-full h-2.5 bg-gray-200 overflow-hidden;
+    @apply w-full rounded-full h-2.5 bg-gray-200 relative overflow-hidden;
     .dark & {
       @apply bg-gray-600;
     }
   }
 
   .risk-bar-fill {
-    @apply h-2.5 rounded-full;
+    @apply h-full rounded-full absolute top-0 left-0;
     transition: width 0.3s ease;
   }
 
