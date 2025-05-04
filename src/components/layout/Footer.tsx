@@ -49,10 +49,10 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Made with ❤️ by Atharva Kaskar</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
-                <span className="text-gray-300">LinkedIn</span>
+                <a href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer">LinkedIn</a>
               </li>
               <li className="flex items-start">
-                <span className="text-gray-300">GitHub</span>
+                <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer">GitHub</a>
               </li>
             </ul>
           </div>
