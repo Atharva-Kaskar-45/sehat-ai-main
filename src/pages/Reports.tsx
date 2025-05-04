@@ -555,8 +555,8 @@ const Reports = () => {
                         <rect 
                           width={`${result.score}%`} 
                           height="10" 
-                          rx="5" 
-                          ry="5" 
+                          rx="0" 
+                          ry="0" 
                           fill={
                             result.risk === 'low' ? '#10B981' : 
                             result.risk === 'medium' ? '#F59E0B' : '#EF4444'
