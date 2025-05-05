@@ -1,304 +1,246 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 260 30% 98%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 260 60% 75%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 260 25% 54%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 260 80% 95%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 260 60% 75%;
-    --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 260 60% 75%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 75.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 40.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 224.3 76.3% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 240 3.7% 25%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground transition-colors duration-300;
-  }
-  
-  /* Dark mode overrides */
-  .dark .text-gray-600,
-  .dark .text-gray-700,
-  .dark .text-gray-400,
-  .dark .text-muted-foreground {
-    @apply text-gray-300;
-  }
-  
-  .dark .border-gray-100,
-  .dark .border-gray-200 {
-    @apply border-gray-700;
-  }
-  
-  .dark .bg-white {
-    background-color: rgb(31 41 55);
-  }
-  
-  .dark .bg-gray-50,
-  .dark .bg-gray-100 {
-    background-color: rgb(31 41 55);
-  }
-  
-  .dark .shadow-md,
-  .dark .shadow-lg {
-    box-shadow: 0 4px 14px 0 rgba(0,0,0,0.5);
-  }
-
-  /* SVG risk bar colors for dark mode */
-  .dark .risk-bar-bg {
-    fill: rgb(55 65 81) !important; /* gray-700 */
-  }
-}
-
 /* ================= PRINT STYLES ================= */
 @media print {
   /* Force print styles at root level */
   :root {
-    color-scheme: light !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
+    forced-color-adjust: exact !important;
   }
-
-  /* Force light mode for all elements */
+  
+  /* Force light mode for ALL elements - strengthened */
+  html,
   body,
   body.dark,
   body.printing,
-  body.printing * {
+  #root,
+  #__next,
+  main,
+  .app-container,
+  [data-theme="dark"],
+  [data-mode="dark"],
+  :where(*) {
     background-color: white !important;
     color: black !important;
+    filter: none !important;
   }
-
+  
+  /* Override dark mode variables globally */
+  html,
+  :root {
+    --background: #ffffff !important;
+    --foreground: #000000 !important;
+    --card: #ffffff !important;
+    --card-foreground: #000000 !important;
+    --popover: #ffffff !important;
+    --popover-foreground: #000000 !important;
+    --primary: #000000 !important;
+    --primary-foreground: #ffffff !important;
+    --secondary: #f5f5f5 !important;
+    --secondary-foreground: #171717 !important;
+    --muted: #f5f5f5 !important;
+    --muted-foreground: #737373 !important;
+    --accent: #f5f5f5 !important;
+    --accent-foreground: #171717 !important;
+    --destructive: #ef4444 !important;
+    --destructive-foreground: #ffffff !important;
+    --border: #e5e5e5 !important;
+    --input: #e5e5e5 !important;
+    --ring: #171717 !important;
+  }
+  
   /* Ensure all backgrounds print */
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    forced-color-adjust: exact !important;
   }
-
+  
+  /* Mobile-specific overrides */
+  @media screen and (max-width: 767px) {
+    body,
+    body.dark,
+    html,
+    #root,
+    #__next,
+    main,
+    .app-container,
+    [data-theme="dark"],
+    [data-mode="dark"] {
+      background-color: white !important;
+      color: black !important;
+      -webkit-filter: none !important;
+      filter: none !important;
+    }
+  }
+  
   /* Risk bar specific styles */
   .risk-bar-container {
     background-color: #e5e7eb !important; /* bg-gray-200 */
   }
-
+  
   .risk-bar-fill {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    color-adjust: exact !important;
     fill-opacity: 1 !important;
   }
-
+  
   /* Status indicators */
   .status-indicator {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
-
+  
   /* Chart styling */
   .recharts-wrapper,
   .recharts-surface {
     overflow: visible !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
-
+  
   .recharts-bar-rectangle {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
-
+  
   /* Hide unwanted elements */
   footer,
   .no-print,
-  .print\:hidden {
+  .print\:hidden,
+  nav,
+  button,
+  .button,
+  .btn,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  .navbar,
+  .nav-menu,
+  .menu,
+  .mobile-nav,
+  .header-nav,
+  .site-nav {
     display: none !important;
+    visibility: hidden !important;
   }
-
+  
   /* Table styling */
   table {
     border-collapse: collapse !important;
     width: 100% !important;
+    background-color: white !important;
+    color: black !important;
   }
-
+  
   th, td {
     border: 1px solid #d1d5db !important; /* gray-300 */
     padding: 0.5rem !important;
+    background-color: white !important;
+    color: black !important;
   }
-
+  
   /* Card styling */
   .card {
     break-inside: avoid;
     page-break-inside: avoid;
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #e5e7eb !important;
   }
-
+  
   .print-chart-container {
     height: 180px !important;
     min-height: 180px !important;
     overflow: visible !important;
   }
-
+  
   .print-chart-wrapper {
     page-break-inside: avoid;
     break-inside: avoid;
     overflow: visible !important;
   }
-
+  
   .recharts-cartesian-axis-tick {
     font-size: 10px !important;
+    fill: #000000 !important; /* Ensure tick text is black */
   }
-
+  
   .print-new-page {
     page-break-before: always !important;
     break-before: page !important;
     margin-top: 0 !important;
   }
-
-  /* NEW: Keep tables intact on pages */
+  
+  /* Table containers */
   .print-table-container {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+    background-color: white !important;
   }
-
-  /* NEW: Table row protection */
+  
+  /* Table row protection */
   .print-table-container tr {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+    background-color: white !important;
+    color: black !important;
   }
-
+  
   /* Force full width for print */
   .print\:w-full {
     width: 100% !important;
   }
-
+  
   /* Text contrast for print */
   .text-gray-600,
   .text-gray-700,
   .text-gray-400,
-  .text-muted-foreground {
+  .text-muted-foreground,
+  .text-gray-500,
+  .text-gray-800,
+  .text-gray-900,
+  [class*="text-"] {
     color: #4b5563 !important; /* gray-600 */
   }
-}
-
-@layer components {
-  /* Form components */
-  .health-input {
-    @apply w-full p-3 rounded-md border outline-none bg-white;
-    &:focus {
-      @apply outline-none ring-2 ring-primary;
+  
+  /* SVG elements need color forcing too */
+  svg, path, rect, circle, line, polyline, polygon {
+    color: currentColor !important;
+    stroke: currentColor !important;
+    fill: currentColor !important;
+  }
+  
+  /* Force background images to print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  
+  /* Added specific fix for iOS Safari */
+  @media not all and (min-resolution:.001dpcm) { 
+    @supports (-webkit-appearance:none) {
+      html, body {
+        -webkit-filter: brightness(1) !important;
+        filter: brightness(1) !important;
+        background: white !important;
+        color: black !important;
+      }
     }
-    .dark & {
-      @apply bg-gray-800 border-gray-700 text-white;
-    }
-    @media print {
+  }
+  
+  /* Special fix for Android Chrome */
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+    body {
+      -webkit-print-color-adjust: exact !important;
       background-color: white !important;
-      border-color: #d1d5db !important; /* gray-300 */
       color: black !important;
     }
-  }
-
-  .health-label {
-    @apply block mb-1 text-sm font-medium text-gray-600;
-    .dark & {
-      @apply text-gray-300;
-    }
-    @media print {
-      color: #4b5563 !important; /* gray-600 */
-    }
-  }
-
-  /* File upload area */
-  #drop-area {
-    @apply w-full h-48 pl-4 pt-8 pb-8 text-center rounded-xl bg-purple-50;
-    @media print {
-      background-color: #f3f4f6 !important; /* gray-100 */
-      border-color: #e5e7eb !important; /* gray-200 */
-    }
-  }
-
-  #image-view {
-    @apply w-full h-full rounded-xl border-2 border-dashed border-purple-200 bg-gray-50;
-    @media print {
-      background-color: #f3f4f6 !important; /* gray-100 */
-      border-color: #e5e7eb !important; /* gray-200 */
-    }
-  }
-
-  .health-form-group {
-    @apply mb-4;
-  }
-
-  /* Risk bar component */
-  .risk-bar-container {
-    @apply w-full rounded-full h-2.5 bg-gray-200 relative overflow-hidden;
-    .dark & {
-      @apply bg-gray-600;
-    }
-  }
-
-  .risk-bar-fill {
-    @apply h-full rounded-full absolute top-0 left-0;
-    transition: width 0.3s ease;
-  }
-
-  /* Status badges */
-  .status-badge {
-    @apply px-2 py-1 text-xs font-semibold rounded-full text-white;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
   }
 }
