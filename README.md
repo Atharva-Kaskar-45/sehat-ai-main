@@ -80,7 +80,7 @@ ii. Hosting/Deployment:
 
 ## Demo Video
 
-<video width="600" controls><source src="videos/parkinsons_demo.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+<video width="600" controls><source src="images/Demo Video_Sehat AI (1) (1).mp4" type="video/mp4">Your browser does not support the video tag.</video>
 
 
 ## Contributing 🧑‍💻
