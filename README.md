@@ -22,7 +22,7 @@ https://sehat-ai-main.vercel.app/
       </p>
     </td>
     <td style="text-align: right; vertical-align: top;">
-      <img src="images/SehatAI_logo.jpg" alt="Sehat AI Logo" width="700"/>
+      <img src="images/Sehat AI_Logo.jpg" alt="Sehat AI Logo" width="700"/>
     </td>
   </tr>
 </table>
