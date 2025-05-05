@@ -3,8 +3,8 @@
 ## Hosted Application 🌐
 
 Access the live version of Sehat AI here: 
-https://sehat-ai-main.vercel.app/
-<img src="images/QR_Sehat AI.png" alt="QR code of Sehat AI"/> <br>
+https://sehat-ai-main.vercel.app/ 
+<br> <img src="images/QR_Sehat AI.png" alt="QR code of Sehat AI" width="900"/> <br>
 
 ## Introduction
 <table>
