@@ -1,5 +1,28 @@
 # Sehat AI: AI-Powered Health Risk Assessment Tool ❤️💊
 
+
+## Introduction
+<table>
+  <tr>
+    <td style="text-align: left; vertical-align: top;">
+      <h1>Sehat AI</h1>
+      <p>
+        Sehat AI is an AI-powered health platform that predicts risks for Diabetes, Heart Disease, and Parkinson's using clinical ML models. Users input health metrics to receive instant, personalized risk   
+        assessments with visual reports. Designed for early detection, it complements (but doesn’t replace) medical advice. All data stays private with client-side processing. Empowering proactive health 
+        decisions through AI.
+      </p>
+      <p>
+        In the future, Sehat AI aims to expand its predictions to include a broader range of diseases, offering even more 
+        personalized health assessments. And also aims to add multilingual report generation feature.
+      </p>
+    </td>
+    <td style="text-align: right; vertical-align: top;">
+      <img src="images/Sehat AI_Logo.jpg" alt="Sehat AI Logo" width="700"/>
+    </td>
+  </tr>
+</table>
+
+
 ## Hosted Application 🌐
 
 <table>
@@ -24,27 +47,6 @@
   </tr>
 </table>
 
-
-## Introduction
-<table>
-  <tr>
-    <td style="text-align: left; vertical-align: top;">
-      <h1>Sehat AI</h1>
-      <p>
-        Sehat AI is an AI-powered health platform that predicts risks for Diabetes, Heart Disease, and Parkinson's using clinical ML models. Users input health metrics to receive instant, personalized risk   
-        assessments with visual reports. Designed for early detection, it complements (but doesn’t replace) medical advice. All data stays private with client-side processing. Empowering proactive health 
-        decisions through AI.
-      </p>
-      <p>
-        In the future, Sehat AI aims to expand its predictions to include a broader range of diseases, offering even more 
-        personalized health assessments. And also aims to add multilingual report generation feature.
-      </p>
-    </td>
-    <td style="text-align: right; vertical-align: top;">
-      <img src="images/Sehat AI_Logo.jpg" alt="Sehat AI Logo" width="700"/>
-    </td>
-  </tr>
-</table>
 
 ## Features🚀 
 
