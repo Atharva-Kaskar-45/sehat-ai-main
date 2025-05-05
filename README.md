@@ -80,7 +80,7 @@ ii. Hosting/Deployment:
 
 ## Demo Video
 
-<video width="600" controls><source src="images/Demo Video_Sehat AI (1) (1).mp4" type="video/mp4">Your browser does not support the video tag.</video>
+https://github.com/user-attachments/assets/2e1efb33-03d8-47df-9e4e-dbf8a5046176
 
 
 ## Contributing 🧑‍💻
