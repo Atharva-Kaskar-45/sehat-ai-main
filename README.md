@@ -4,7 +4,7 @@
 
 Access the live version of Sehat AI here: 
 https://sehat-ai-main.vercel.app/
-<img src="images/Parkinsons_screenshot.png" alt="QR code of Sehat AI"/> <br>
+<img src="images/QR_Sehat AI.png" alt="QR code of Sehat AI"/> <br>
 
 ## Introduction
 <table>
