@@ -108,14 +108,13 @@
 }
 
 /* ================= GOOGLE TRANSLATE STYLES ================= */
-/* Hide Google's default banner */
+/* Hide Google's default banner and gadget */
 .goog-te-banner-frame {
   display: none !important;
   visibility: hidden !important;
   height: 0 !important;
 }
 
-/* Hide gadget text */
 .goog-te-gadget {
   color: transparent !important;
   font-size: 0 !important;
@@ -126,16 +125,16 @@
   @apply bg-background text-foreground border border-input rounded-md px-3 py-1.5 text-sm shadow-sm;
   @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   min-width: 120px !important;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-  background-size: 1rem;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.5rem center !important;
+  background-size: 1rem !important;
 }
 
-/* Dark mode styles */
+/* Dark mode styles for dropdown */
 .dark .goog-te-combo {
   @apply bg-gray-800 border-gray-700 text-white;
 }
@@ -351,24 +350,9 @@
     print-color-adjust: exact;
   }
 
-  /* Google Translate Wrapper */
-  .translate-wrapper {
-    @apply relative z-50;
-    
-    .goog-te-gadget-simple {
-      @apply bg-transparent border-none p-0;
-    }
-    
-    .goog-te-combo {
-      @apply pr-8;
-      background-position: right 0.75rem center;
-    }
-    
-    .dark & {
-      .goog-te-combo {
-        @apply bg-gray-800 text-white border-gray-700;
-      }
-    }
+  /* Language switcher button */
+  .language-switcher-btn {
+    @apply flex items-center gap-2 px-3 py-2 rounded-md hover:bg-accent transition-colors;
   }
 }
 
