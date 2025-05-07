@@ -1,6 +1,6 @@
 import * as React from "react"
 import * as MenubarPrimitive from "@radix-ui/react-menubar"
-import { Check, ChevronRight, Circle } from "lucide-react"
+import { Check, ChevronRight, Circle, Globe } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -214,6 +214,118 @@ const MenubarShortcut = ({
 }
 MenubarShortcut.displayname = "MenubarShortcut"
 
+// New Language Switcher Component
+const MenubarLanguageSwitcher = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Item>
+>(({ className, ...props }, ref) => {
+  const [currentLanguage, setCurrentLanguage] = React.useState('en');
+  const [showDisclaimer, setShowDisclaimer] = React.useState(false);
+
+  const languages = [
+    { code: 'en', name: 'English' },
+    { code: 'hi', name: 'हिन्दी' },
+    { code: 'ur', name: 'اردو' },
+    { code: 'bn', name: 'বাংলা' },
+    { code: 'ta', name: 'தமிழ்' },
+    { code: 'te', name: 'తెలుగు' },
+    { code: 'mr', name: 'मराठी' },
+    { code: 'gu', name: 'ગુજરાતી' },
+    { code: 'kn', name: 'ಕನ್ನಡ' },
+    { code: 'ml', name: 'മലയാളം' },
+    { code: 'pa', name: 'ਪੰਜਾਬੀ' },
+  ];
+
+  React.useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    document.head.appendChild(script);
+
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement(
+        {
+          pageLanguage: 'en',
+          includedLanguages: languages.map(l => l.code).join(','),
+          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE
+        },
+        'google_translate_element'
+      );
+    };
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  const changeLanguage = (langCode: string) => {
+    setCurrentLanguage(langCode);
+    if (langCode !== 'en') {
+      setShowDisclaimer(true);
+    }
+    
+    const select = document.querySelector<HTMLSelectElement>('.goog-te-combo');
+    if (select) {
+      select.value = langCode;
+      select.dispatchEvent(new Event('change'));
+    }
+  };
+
+  return (
+    <MenubarPrimitive.Item ref={ref} {...props}>
+      <MenubarPrimitive.Trigger
+        className={cn(
+          "flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
+          className
+        )}
+      >
+        <Globe className="mr-2 h-4 w-4" />
+        <span>{languages.find(l => l.code === currentLanguage)?.name || 'English'}</span>
+      </MenubarPrimitive.Trigger>
+
+      <MenubarPrimitive.Portal>
+        <MenubarPrimitive.Content
+          className="z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
+          align="end"
+          sideOffset={8}
+          alignOffset={-4}
+        >
+          {languages.map((language) => (
+            <MenubarPrimitive.Item
+              key={language.code}
+              onClick={() => changeLanguage(language.code)}
+              className={cn(
+                "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground",
+                currentLanguage === language.code && "bg-accent text-accent-foreground"
+              )}
+            >
+              {language.name}
+            </MenubarPrimitive.Item>
+          ))}
+        </MenubarPrimitive.Content>
+      </MenubarPrimitive.Portal>
+
+      {/* Hidden Google Translate Element */}
+      <div id="google_translate_element" className="hidden"></div>
+
+      {/* Translation Disclaimer */}
+      {showDisclaimer && (
+        <div className="fixed bottom-4 right-4 bg-yellow-50 border-l-4 border-yellow-400 p-4 max-w-xs rounded-md shadow-lg">
+          <p className="text-sm text-yellow-700">
+            Note: Medical terms may not translate accurately. For precise medical information, please consult the English version.
+          </p>
+          <button 
+            onClick={() => setShowDisclaimer(false)}
+            className="mt-2 text-xs text-yellow-600 hover:text-yellow-800"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+    </MenubarPrimitive.Item>
+  );
+});
+MenubarLanguageSwitcher.displayName = "MenubarLanguageSwitcher";
+
 export {
   Menubar,
   MenubarMenu,
@@ -231,4 +343,5 @@ export {
   MenubarGroup,
   MenubarSub,
   MenubarShortcut,
+  MenubarLanguageSwitcher,
 }
