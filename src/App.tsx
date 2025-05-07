@@ -1,3 +1,4 @@
+// app.tsx
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,30 +16,25 @@ import Reports from "./pages/Reports";
 
 const queryClient = new QueryClient();
 
-// Google Translate Loader Component
 const GoogleTranslateLoader = () => {
   useEffect(() => {
-    const loadGoogleTranslate = () => {
-      if (window.google && window.google.translate) return;
+    if (window.google?.translate) return;
 
-      const script = document.createElement('script');
-      script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-      script.async = true;
-      document.head.appendChild(script);
+    const script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    document.head.appendChild(script);
 
-      window.googleTranslateElementInit = () => {
-        new window.google.translate.TranslateElement(
-          {
-            pageLanguage: 'en',
-            includedLanguages: 'en,hi,ur,bn,ta,te,mr,gu,kn,ml,pa',
-            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE
-          },
-          'google_translate_element'
-        );
-      };
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement(
+        {
+          pageLanguage: 'en',
+          includedLanguages: 'en,hi,ur,bn,ta,te,mr,gu,kn,ml,pa',
+          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE
+        },
+        'google_translate_element'
+      );
     };
-
-    loadGoogleTranslate();
 
     return () => {
       const script = document.querySelector('script[src*="translate.google.com"]');
@@ -49,7 +45,6 @@ const GoogleTranslateLoader = () => {
   return null;
 };
 
-// ScrollToTop component that will execute on route changes
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   
@@ -66,7 +61,7 @@ const App = () => (
       <ThemeProvider>
         <LanguageProvider>
           <GoogleTranslateLoader />
-          <div id="google_translate_element" className="fixed bottom-4 right-4 z-[9999] opacity-0 h-[0px] w-[0px] overflow-hidden"></div>
+          <div id="google_translate_element" className="fixed bottom-4 right-4 z-[9999] opacity-0 h-0 w-0 overflow-hidden"></div>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -77,7 +72,6 @@ const App = () => (
               <Route path="/heart-disease" element={<HeartDiseaseAssessment />} />
               <Route path="/parkinsons" element={<ParkinsonsAssessment />} />
               <Route path="/reports" element={<Reports />} />
-              {/* Add specific routes for each assessment report type */}
               <Route path="/reports/diabetes" element={<Navigate to="/reports?type=diabetes" replace />} />
               <Route path="/reports/heart-disease" element={<Navigate to="/reports?type=heartDisease" replace />} />
               <Route path="/reports/parkinsons" element={<Navigate to="/reports?type=parkinsons" replace />} />
