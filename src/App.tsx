@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +15,40 @@ import Reports from "./pages/Reports";
 
 const queryClient = new QueryClient();
 
+// Google Translate Loader Component
+const GoogleTranslateLoader = () => {
+  useEffect(() => {
+    const loadGoogleTranslate = () => {
+      if (window.google && window.google.translate) return;
+
+      const script = document.createElement('script');
+      script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      script.async = true;
+      document.head.appendChild(script);
+
+      window.googleTranslateElementInit = () => {
+        new window.google.translate.TranslateElement(
+          {
+            pageLanguage: 'en',
+            includedLanguages: 'en,hi,ur,bn,ta,te,mr,gu,kn,ml,pa',
+            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE
+          },
+          'google_translate_element'
+        );
+      };
+    };
+
+    loadGoogleTranslate();
+
+    return () => {
+      const script = document.querySelector('script[src*="translate.google.com"]');
+      if (script) document.head.removeChild(script);
+    };
+  }, []);
+
+  return null;
+};
+
 // ScrollToTop component that will execute on route changes
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -32,6 +65,8 @@ const App = () => (
     <TooltipProvider>
       <ThemeProvider>
         <LanguageProvider>
+          <GoogleTranslateLoader />
+          <div id="google_translate_element" className="fixed bottom-4 right-4 z-[9999] opacity-0 h-[0px] w-[0px] overflow-hidden"></div>
           <Toaster />
           <Sonner />
           <BrowserRouter>
